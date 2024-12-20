@@ -5,7 +5,7 @@ export function startKeepAliveTimer() {
 		clearTimeout(this.keepAliveTimer)
 	}
 	this.keepAliveTimer = setTimeout(() => {
-		this.keepAlive()
+		this.keepAlive().catch(() => {})
 	}, keepAliveTimeOut)
 }
 
@@ -16,10 +16,10 @@ export function stopKeepAliveTimer() {
 	}
 }
 
-export function keepAlive() {
+export async function keepAlive() {
 	if (this.socket !== undefined && this.socket.isConnected) {
 		//Send dummy message
-		this.socket.send(this.hexStringToBuffer(DLE + STX + '0000' + DLE + ETX))
+		await this.socket.send(this.hexStringToBuffer(DLE + STX + '0000' + DLE + ETX))
 	}
 	this.startKeepAliveTimer()
 }

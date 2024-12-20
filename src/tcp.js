@@ -12,7 +12,7 @@ export function sendAck() {
 	}
 }
 
-export function sendMessage(message) {
+export async function sendMessage(message) {
 	if (message.length < 2) {
 		this.log('warn', 'Empty or invalid message!')
 		return
@@ -51,13 +51,15 @@ export function sendMessage(message) {
 	const cmd = DLE + STX + packed + DLE + ETX
 
 	console.log('Sending >> ' + cmd)
-	this.queue.add(() => {
+	return await this.queue.add(async() => {
 		if (cmd !== undefined) {
 			if (this.socket !== undefined && this.socket.isConnected) {
-				this.socket.send(this.hexStringToBuffer(cmd))
+				const result = await this.socket.send(this.hexStringToBuffer(cmd))
 				this.startKeepAliveTimer()
+				return result
 			} else {
 				this.log('warn', `Socket not connected. Tried to send ${cmd}`)
+				return false
 			}
 		}
 	})

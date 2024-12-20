@@ -19,8 +19,8 @@ export function readNames() {
 	}
 
 	// get source names
-	this.sendMessage(get_source + this.checksum8(get_source))
+	this.sendMessage(get_source + this.checksum8(get_source)).catch(() => {})
 
 	// get dest names
-	this.sendMessage(get_dest + this.checksum8(get_dest))
+	this.sendMessage(get_dest + this.checksum8(get_dest)).catch(() => {})
 }

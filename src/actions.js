@@ -27,15 +27,15 @@ export async function UpdateActions(self) {
 	actionDefinitions['select_dest'] = {
 		name: 'Select Destination',
 		options: [actionOptions.destination],
-		callback: ({ options }) => {
+		callback: async ({ options }) => {
 			self.selected_dest = parseInt(options.dest)
-			self.getCrosspoints(options.dest)
+			await self.getCrosspoints(options.dest)
 			console.log('set destination ' + self.selected_dest)
 			self.setVariableValues({ Destination: self.selected_dest })
 			self.checkFeedbacks('selected_dest', 'selected_level_dest', 'source_dest_route')
 		},
-		subscribe: (action) => {
-			self.getCrosspoints(action.options.dest)
+		subscribe: async (action) => {
+			await self.getCrosspoints(action.options.dest)
 		},
 	}
 	actionDefinitions['select_dest_name'] = {
@@ -48,7 +48,7 @@ export async function UpdateActions(self) {
 				return undefined
 			}
 			self.selected_dest = dest
-			self.getCrosspoints(dest)
+			await self.getCrosspoints(dest)
 			console.log('set destination ' + self.selected_dest)
 			self.setVariableValues({ Destination: self.selected_dest })
 			self.checkFeedbacks('selected_dest', 'selected_level_dest', 'source_dest_route')
@@ -59,7 +59,7 @@ export async function UpdateActions(self) {
 				self.log('warn', `select_dest_name:Subscribe has been passed an out of range variable - dst ${dest}`)
 				return undefined
 			}
-			self.getCrosspoints(dest)
+			await self.getCrosspoints(dest)
 		},
 	}
 	actionDefinitions['select_source'] = {
@@ -90,12 +90,12 @@ export async function UpdateActions(self) {
 	actionDefinitions['route_source'] = {
 		name: 'Route Source to selected Levels and Destination',
 		options: [actionOptions.source],
-		callback: ({ options }) => {
+		callback: async ({ options }) => {
 			console.log(self.selected_level)
 			const l = self.selected_level.length
 			for (let i = 0; i < l; i++) {
 				if (self.selected_level[i].enabled === true) {
-					self.SetCrosspoint(options.source, self.selected_dest, self.selected_level[i].id)
+					await self.SetCrosspoint(options.source, self.selected_dest, self.selected_level[i].id)
 				}
 			}
 		},
@@ -113,7 +113,7 @@ export async function UpdateActions(self) {
 			const l = self.selected_level.length
 			for (let i = 0; i < l; i++) {
 				if (self.selected_level[i].enabled === true) {
-					self.SetCrosspoint(source, self.selected_dest, self.selected_level[i].id)
+					await self.SetCrosspoint(source, self.selected_dest, self.selected_level[i].id)
 				}
 			}
 		},
@@ -121,12 +121,12 @@ export async function UpdateActions(self) {
 	actionDefinitions['take'] = {
 		name: 'Take',
 		options: [],
-		callback: () => {
+		callback: async () => {
 			console.log(self.selected_level)
 			const l = self.selected_level.length
 			for (let i = 0; i < l; i++) {
 				if (self.selected_level[i].enabled === true) {
-					self.SetCrosspoint(self.selected_source, self.selected_dest, self.selected_level[i].id)
+					await self.SetCrosspoint(self.selected_source, self.selected_dest, self.selected_level[i].id)
 				}
 			}
 		},
@@ -162,9 +162,9 @@ export async function UpdateActions(self) {
 	actionDefinitions['set_crosspoint'] = {
 		name: 'Set crosspoint',
 		options: [{ ...actionOptions.levels, choices: self.levels }, actionOptions.source, actionOptions.destination],
-		callback: ({ options }) => {
+		callback: async ({ options }) => {
 			for (let level_val of options.level) {
-				self.SetCrosspoint(options.source, options.dest, level_val)
+				await self.SetCrosspoint(options.source, options.dest, level_val)
 			}
 		},
 	}
@@ -183,7 +183,7 @@ export async function UpdateActions(self) {
 				return undefined
 			}
 			for (let level_val of options.level) {
-				self.SetCrosspoint(source, dest, level_val)
+				await self.SetCrosspoint(source, dest, level_val)
 			}
 		},
 	}

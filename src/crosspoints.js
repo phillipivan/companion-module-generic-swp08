@@ -78,7 +78,7 @@ export function update_crosspoints(source, dest, level) {
 	this.record_crosspoint(source, dest, level)
 }
 
-export function SetCrosspoint(sourceN, destN, levelN) {
+export async function SetCrosspoint(sourceN, destN, levelN) {
 	let action
 	this.log('debug', 'Crosspoint ' + sourceN + '>' + destN + ' level ' + levelN)
 	console.log('SetCrosspoint ' + sourceN + '>' + destN + ' level ' + levelN)
@@ -141,10 +141,10 @@ export function SetCrosspoint(sourceN, destN, levelN) {
 		action = COM + matrix_level + multiplier + dest + source + count + checksum
 	}
 
-	this.sendMessage(action)
+	return await this.sendMessage(action)
 }
 
-export function getCrosspoints(destN) {
+export async function getCrosspoints(destN) {
 	console.log('GetCrosspoint ' + destN)
 
 	if (destN <= 0 || destN > 65536) {
@@ -171,7 +171,7 @@ export function getCrosspoints(destN) {
 			const checksum = this.checksum8(COM + matrix + level + destDIV + destMOD + count)
 			// message
 			const action = COM + matrix + level + destDIV + destMOD + count + checksum
-			this.sendMessage(action)
+			await this.sendMessage(action)
 		}
 	} else {
 		// Standard commands
@@ -193,7 +193,7 @@ export function getCrosspoints(destN) {
 			const checksum = this.checksum8(COM + matrix_level + multiplier + dest + count)
 			// message
 			const action = COM + matrix_level + multiplier + dest + count + checksum
-			this.sendMessage(action)
+			await this.sendMessage(action)
 		}
 	}
 }
