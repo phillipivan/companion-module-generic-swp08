@@ -17,21 +17,21 @@
 		"url": "git+https://github.com/bitfocus/companion-module-generic-swp08.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.11.2",
-		"p-queue": "^8.0.1"
+		"@companion-module/base": "~1.11.3",
+		"p-queue": "^8.1.0"
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.1.1",
-		"eslint": "^9.17.0",
+		"eslint": "^9.21.0",
 		"husky": "^9.1.7",
-		"lint-staged": "^15.2.11",
-		"prettier": "^3.4.2"
+		"lint-staged": "^15.4.3",
+		"prettier": "^3.5.3"
 	},
 	"engines": {
-		"node": "^22.12"
+		"node": "^22.13"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json",
-	"packageManager": "yarn@4.5.3",
+	"packageManager": "yarn@4.7.0",
 	"lint-staged": {
 		"*.{css,json,md,scss}": [
 			"prettier --write"
